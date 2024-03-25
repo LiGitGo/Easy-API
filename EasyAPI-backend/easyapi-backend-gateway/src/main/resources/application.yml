@@ -1,0 +1,56 @@
+spring:
+  profiles:
+    active: dev
+
+server:
+  port: 8090
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway: trace
+
+---
+spring:
+  profiles: dev
+  cloud:
+    gateway:
+      routes:
+        - id: api_route
+          uri: http://localhost:8123
+          predicates:
+            - Path=/api/**
+
+dubbo:
+  application:
+    name: dubbo-springboot-demo-provider
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    id: nacos-registry
+    address: nacos://localhost:8848
+
+---
+spring:
+  profiles: prod
+  cloud:
+    gateway:
+      routes:
+        - id: api_route
+          uri: http://124.220.65.130:8123
+          predicates:
+            - Path=/api/**
+
+dubbo:
+  application:
+    name: dubbo-springboot-demo-provider
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    id: nacos-registry
+    address: nacos://124.220.65.130:8848
+
