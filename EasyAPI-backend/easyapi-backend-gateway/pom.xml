@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- @author <a href="https://github.com/liyupi">程序员鱼皮</a> -->
-<!-- @from <a href="https://yupi.icu">编程导航知识星球</a> -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -10,20 +8,19 @@
         <version>2.7.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.yupi</groupId>
-    <artifactId>yuapi-gateway</artifactId>
+    <groupId>love.lisi</groupId>
+    <artifactId>easyapi-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>yuapi-gateway</name>
-    <description>yuapi-gateway</description>
+    <name>easyapi-gateway</name>
+    <description>easyapi-gateway</description>
     <properties>
         <java.version>1.8</java.version>
         <spring-cloud.version>2021.0.5</spring-cloud.version>
     </properties>
-<!-- 讲师 [coder_鱼_皮](https://space.bilibili.com/12890453/) -->
     <dependencies>
         <dependency>
-            <groupId>com.yupi</groupId>
-            <artifactId>yuapi-common</artifactId>
+            <groupId>love.lisi</groupId>
+            <artifactId>easyapi-common</artifactId>
             <version>0.0.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo -->
@@ -42,8 +39,8 @@
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yupi</groupId>
-            <artifactId>yuapi-client-sdk</artifactId>
+            <groupId>love.lisi</groupId>
+            <artifactId>easyapi-client-sdk</artifactId>
             <version>0.0.1</version>
         </dependency>
         <dependency>
