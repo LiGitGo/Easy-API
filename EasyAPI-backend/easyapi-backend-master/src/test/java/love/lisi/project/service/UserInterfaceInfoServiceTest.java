@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 public class UserInterfaceInfoServiceTest {
 
 
-    @Test
-    public void invokeCount() {
-    }
+//    @Test
+//    public void invokeCount() {
+//    }
 }
