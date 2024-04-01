@@ -10,15 +10,13 @@ import org.springframework.context.annotation.Configuration;
 /**
  * MyBatis Plus 配置
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
 @Configuration
-@MapperScan("com.yupi.project.mapper")
+@MapperScan("love.lisi.project.mapper")
 public class MyBatisPlusConfig {
 
     /**
-     * 拦截器配置
+     * 拦截器配置,添加mybatis-plus分页插件
      *
      * @return
      */
