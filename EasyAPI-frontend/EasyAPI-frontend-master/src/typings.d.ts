@@ -23,23 +23,25 @@ declare let ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION: 'site' | undefine
 
 declare const REACT_APP_ENV: 'test' | 'dev' | 'pre' | false;
 
-/**
- * 全局状态类型
- */
-interface InitialState {
-  loginUser?: API.UserVO;
-}
+// /**
+//  * 全局状态类型
+//  */
+// interface InitialState {
+//   loginUser?: API.UserVO;
+//   settings?: Partial<LayoutSettings>;
+//   loading?:boolean;
+// }
 
 
-createTime	string(date-time)
-description	string
-id	integer(int64)
-isDelete	integer(int32)
-method	string
-name	string
-requestHeader	string
-responseHeader	string
-status	integer(int32)
-updateTime	string(date-time)
-url	string
-userId	integer(int64)
+// createTime	string(date-time)
+// description	string
+// id	integer(int64)
+// isDelete	integer(int32)
+// method	string
+// name	string
+// requestHeader	string
+// responseHeader	string
+// status	integer(int32)
+// updateTime	string(date-time)
+// url	string
+// userId	integer(int64)

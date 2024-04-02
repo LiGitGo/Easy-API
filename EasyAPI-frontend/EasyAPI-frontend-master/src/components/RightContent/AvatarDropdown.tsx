@@ -19,8 +19,8 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   /**
    * 退出登录，并且将当前的 url 保存
    */
-  const loginOut = async () => {
-    await outLogin();
+  const logOut = async () => {
+    await userLogoutUsingPOST();
     const { search, pathname } = window.location;
     const urlParams = new URL(window.location.href).searchParams;
     /** 此方法会跳转到 redirect 参数所在的位置 */
@@ -42,16 +42,16 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
       const { key } = event;
       if (key === 'logout') {
         flushSync(() => {
-          setInitialState((s) => ({ ...s, currentUser: undefined }));
+          setInitialState((s) => ({ ...s, loginUser: undefined }));
         });
-        userLogoutUsingPOST();
+        logOut();
         return;
       }
       history.push(`/account/${key}`);
     },
     [setInitialState],
   );
-
+  
   const loading = (
     <span className={`${styles.action} ${styles.account}`}>
       <Spin
@@ -68,9 +68,11 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
     return loading;
   }
 
-  const { currentUser } = initialState;
-
-  if (!currentUser || !currentUser.name) {
+  const { loginUser } = initialState;
+  if (loginUser && !loginUser?.userName) {
+    loginUser.userName = '无名';
+  }
+  if (!loginUser || !loginUser.userName) {
     return loading;
   }
 
@@ -106,8 +108,8 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   return (
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${styles.action} ${styles.account}`}>
-        <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-        <span className={`${styles.name} anticon`}>{currentUser.name}</span>
+        <Avatar size="small" className={styles.avatar} src={loginUser.userAvatar} alt="avatar" />
+        <span className={`${styles.name} anticon`}>{loginUser.userName}</span>
       </span>
     </HeaderDropdown>
   );

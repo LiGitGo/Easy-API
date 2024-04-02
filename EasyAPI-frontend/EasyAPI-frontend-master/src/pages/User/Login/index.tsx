@@ -12,6 +12,7 @@ import { Link, history, useModel } from '@umijs/max';
 import { Alert, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import styles from './index.less';
+import { flushSync } from 'react-dom';
 import { userLoginUsingPOST } from '@/services/yuapi-backend/userController';
 
 const LoginMessage: React.FC<{
@@ -29,9 +30,20 @@ const LoginMessage: React.FC<{
   );
 };
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+  const [userLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
+  const fetchUserInfo = async () => {
+    const userInfo = await initialState?.fetchUserInfo?.();
+    if (userInfo) {
+      flushSync(() => {
+        setInitialState((s) => ({
+          ...s,
+          loginUser: userInfo,
+        }));
+      });
+    }
+  };
   const handleSubmit = async (values: API.UserLoginRequest) => {
     try {
       // 登录
@@ -39,11 +51,9 @@ const Login: React.FC = () => {
         ...values,
       });
       if (res.data) {
+        await fetchUserInfo();
         const urlParams = new URL(window.location.href).searchParams;
         history.push(urlParams.get('redirect') || '/');
-        setInitialState({
-          loginUser: res.data
-        });
         return;
       }
     } catch (error) {

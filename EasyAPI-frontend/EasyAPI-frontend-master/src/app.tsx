@@ -4,6 +4,8 @@ import { LinkOutlined } from '@ant-design/icons';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history, Link } from '@umijs/max';
+import defaultSettings from '../config/defaultSettings';
+import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { requestConfig } from './requestConfig';
 import {getLoginUserUsingGET} from "@/services/yuapi-backend/userController";
 
@@ -13,20 +15,38 @@ const loginPath = '/user/login';
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
-export async function getInitialState(): Promise<InitialState> {
+export async function getInitialState(): Promise<{
+  settings?: Partial<LayoutSettings>;
+  loginUser?: API.UserVO;
+  loading?: boolean;
+  fetchUserInfo?: () => Promise<API.UserVO | undefined>;
+}> {
   // 当页面首次加载时，获取要全局保存的数据，比如用户登录信息
-  const state: InitialState = {
-    loginUser: undefined,
-  }
-  try {
-    const res = await getLoginUserUsingGET();
-    if (res.data) {
-      state.loginUser = res.data;
+  const fetchUserInfo = async () => {
+    try {
+      const res = await getLoginUserUsingGET({
+        skipErrorHandler: true,
+      });
+      return res.data;
+    } catch (error) {
+      history.push(loginPath);
     }
-  } catch (error) {
-    history.push(loginPath);
+    return undefined;
+  };
+  // 如果不是登录页面，执行
+  const { location } = history;
+  if (location.pathname !== loginPath) {
+    const loginUser = await fetchUserInfo();
+    return {
+      fetchUserInfo,
+      loginUser,
+      settings: defaultSettings as Partial<LayoutSettings>,
+    };
   }
-  return state;
+  return {
+    fetchUserInfo,
+    settings: defaultSettings as Partial<LayoutSettings>,
+  };
 }
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
