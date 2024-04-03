@@ -22,7 +22,7 @@ export const requestConfig: RequestConfig = {
     (config: RequestOptions) => {
       // 拦截请求配置，进行个性化处理。
       // const url = config?.url?.concat('?token = 123');
-      const url = process.env.NODE_ENV === 'production' ? (config?.url ? 'http://124.220.65.130:7529' + config.url.concat('?token=123') : undefined):config?.url?.concat('?token = 123'); 
+      const url = process.env.NODE_ENV === 'production' ? (config?.url ? 'http://lisi.love:7529' + config.url.concat('?token=123') : undefined):config?.url?.concat('?token = 123'); 
 
       return { ...config, url };
     },
