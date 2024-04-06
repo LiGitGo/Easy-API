@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -222,7 +223,12 @@ public class InterfaceInfoController {
         // 判断该接口是否可以调用
         love.lisi.easyapiclientsdk.model.User user = new love.lisi.easyapiclientsdk.model.User();
         user.setUsername("test");
-        String username = easyApiClient.getUsernameByPost(user);
+        String username = null;
+        try {
+            username = easyApiClient.getUsernameByPost(user);
+        } catch (UnsupportedEncodingException e) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "参数编码失败");
+        }
         if (StringUtils.isBlank(username)) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口验证失败");
         }
@@ -289,9 +295,15 @@ public class InterfaceInfoController {
         String accessKey = loginUser.getAccessKey();
         String secretKey = loginUser.getSecretKey();
         EasyApiClient tempClient = new EasyApiClient(accessKey, secretKey);
+        // todo 根据请求信息，调用tempClient中的不同方法  参考：https://wx.zsxq.com/dweb2/index/topic_detail/181588481251842
         Gson gson = new Gson();
         love.lisi.easyapiclientsdk.model.User user = gson.fromJson(userRequestParams, love.lisi.easyapiclientsdk.model.User.class);
-        String usernameByPost = tempClient.getUsernameByPost(user);
+        String usernameByPost = null;
+        try {
+            usernameByPost = tempClient.getUsernameByPost(user);
+        } catch (UnsupportedEncodingException e) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR);
+        }
         return ResultUtils.success(usernameByPost);
     }
 

@@ -25,6 +25,8 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,6 +79,11 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         String timestamp = headers.getFirst("timestamp");
         String sign = headers.getFirst("sign");
         String body = headers.getFirst("body");
+        try {
+            body = URLDecoder.decode(body,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            log.error("DeCoding error", e);
+        }
         User invokeUser = null;
         try {
             invokeUser = innerUserService.getInvokeUser(accessKey);

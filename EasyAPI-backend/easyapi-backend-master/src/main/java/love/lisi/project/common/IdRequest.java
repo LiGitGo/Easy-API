@@ -1,6 +1,5 @@
 package love.lisi.project.common;
 
-// https://space.bilibili.com/12890453/
 
 import lombok.Data;
 

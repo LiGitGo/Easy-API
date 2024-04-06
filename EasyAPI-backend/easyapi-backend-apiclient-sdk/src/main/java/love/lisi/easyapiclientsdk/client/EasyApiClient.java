@@ -1,6 +1,7 @@
 package love.lisi.easyapiclientsdk.client;
 
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.URLUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
@@ -9,6 +10,8 @@ import love.lisi.easyapiclientsdk.model.User;
 import love.lisi.easyapiclientsdk.utils.SignUtils;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,27 +55,26 @@ public class EasyApiClient {
      * @param body
      * @return
      */
-    private Map<String, String> getHeaderMap(String body) {
+    private Map<String, String> getHeaderMap(String body) throws UnsupportedEncodingException {
+        String encodeBody = URLEncoder.encode(body,"utf-8");
         Map<String, String> hashMap = new HashMap<>();
         hashMap.put("accessKey", accessKey);  //ak
         //随机值，服务端验证新请求的nonce有没有使用过（每次请求将唯一标识保存，待下次请求进来后进行比对判断。可设置保存时长），防止重放
         hashMap.put("nonce", RandomUtil.randomNumbers(4));
-        hashMap.put("body", body);
+        hashMap.put("body", encodeBody);
         //时间戳，服务器会取出请求头中的时间戳与当前时间比对，判断是否该请求已过期，阻止过期请求的重放
         hashMap.put("timestamp", String.valueOf(System.currentTimeMillis() / 1000));
         hashMap.put("sign", SignUtils.genSign(body, secretKey));
         return hashMap;
     }
 
-    public String getUsernameByPost(User user) {
+    public String getUsernameByPost(User user) throws UnsupportedEncodingException {
         String json = JSONUtil.toJsonStr(user);
         HttpResponse httpResponse = HttpRequest.post(GATEWAY_HOST + "/api/name/user")
                 .addHeaders(getHeaderMap(json))
                 .body(json)
                 .execute();
-        //System.out.println(httpResponse.getStatus());
-        String result = httpResponse.body();
-        //System.out.println(result);
-        return result;
+
+        return httpResponse.body();
     }
 }
