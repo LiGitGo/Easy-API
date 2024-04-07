@@ -45,7 +45,7 @@ dubbo:
     name: dubbo-springboot-demo-provider
   protocol:
     name: dubbo
-    port: -1
+    port: -1  #设置端口为 -1 表示 dubbo 自动扫描并使用可用端口(从20880开始递增),
   registry:
     id: nacos-registry
     address: nacos://localhost:8848

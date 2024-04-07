@@ -26,6 +26,10 @@ public class NameController {
 
     @PostMapping("/user")
     public String getUsernameByPost(@RequestBody User user, HttpServletRequest request) {
-        return "POST 用户名字是" + user.getUsername();
+        String username = user.getUsername();
+        if (username == null) {
+            throw new RuntimeException("参数错误");
+        }
+        return "POST 用户名字是" + username;
     }
 }

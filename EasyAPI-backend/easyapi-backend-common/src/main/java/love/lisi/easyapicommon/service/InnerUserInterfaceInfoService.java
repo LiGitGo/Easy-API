@@ -7,10 +7,18 @@ package love.lisi.easyapicommon.service;
 public interface InnerUserInterfaceInfoService {
 
     /**
-     * 调用接口统计
+     * 调用接口后次数改变
      * @param interfaceInfoId
      * @param userId
      * @return
      */
     boolean invokeCount(long interfaceInfoId, long userId);
+
+    /**
+     * 查询剩余调用次数
+     * @param interfaceInfoId
+     * @param userId
+     * @return
+     */
+    int leftInvokeCount(long interfaceInfoId, long userId);
 }
